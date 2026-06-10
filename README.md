@@ -24,27 +24,28 @@ http://<hass>:8123/some-dashboard/some-view?navbar=bottom
 
 The navigation bar will be moved to the bottom of the screen until the next page refresh.
 
-To save the navigation bar position to `localStorage` and move the navbar to the bottom automatically without having to specify `navbar=bottom` every time, use `navbar_cache`:
-
-```
-http://<hass>:8123/some-dashboard/some-view?navbar=bottom&navbar_cache
-```
-
-Thereafter, page loads that don't specify any `navbar` query parameters will default to moving the navbar to the bottom.
-
-To clear the saved position and return the navbar to the top on future page loads, use `navbar_cache` without `navbar=...`:
-
-```
-http://<hass>:8123/some-dashboard/some-view?navbar_cache
-```
-
 There will likely be additional ways to configure this plugin in the future - pull requests gladly accepted.
 
 ## Via custom card
 
-For scenarios where it isn't possible to edit the URL directly (e.g. when using the Home Assistant mobile apps), you can toggle the navigation bar position on a per-device basis using the `Navbar Position Configuration Card` custom card.
+For scenarios where it isn't possible to edit the URL directly (e.g. when using the Home Assistant mobile apps), you can use the `Navbar Position Configuration Card` custom card.
 
-Add it to a dashboard of your choosing, then click the card's "toggle navigation bar position" button on any device where you want to move the navbar to the bottom of the screen. The button will save the change to `localStorage`; you can then get rid of the card and the navbar will continue to show up at the bottom of the screen on the device in question.
+Add it to a dashboard of your choosing, then click the card's "toggle navigation bar position" button to switch between the default top position and a temporary bottom position for the current page.
+
+The card also supports a few optional configuration values:
+
+```yaml
+type: custom:navbar-position-configuration-card
+hidden: yes
+vertical-position: bottom
+horizontal-position: center
+```
+
+- `hidden: yes` applies the configured position without rendering a card or button.
+- `vertical-position` accepts `top` or `bottom`.
+- `horizontal-position` accepts `left`, `center`, or `right`.
+
+If either `vertical-position` or `horizontal-position` is provided, the card applies that configuration as soon as the page loads and resets back to the default top/left layout when you navigate to a page that does not include the card. These configured positions are temporary and are not persisted. If neither is provided, the card behaves like a temporary toggle button for the current page.
 
 # Limitations
 
